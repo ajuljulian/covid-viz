@@ -24,7 +24,7 @@ df = pd.read_csv(us_states_data_file, parse_dates=["date"], index_col='date')
 # Create each of the tabs
 tab1 = tab1()
 tab2 = tab2()
-tab3 = tab3(df)
+tab3 = tab3(df, "California")
 
 # Put all the tabs into one application
 tabs = Tabs(tabs=[tab1, tab2, tab3])

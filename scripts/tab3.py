@@ -15,7 +15,7 @@ from bokeh.layouts import column, row, gridplot, widgetbox
 from bokeh.palettes import brewer
 from bokeh.models.widgets import Select, TableColumn, DataTable, CheckboxGroup
 
-def tab3(df):
+def tab3(df, state):
 
     def get_data_for_state(state):
         df_one_state = df.where(df['state'] == state)
@@ -25,7 +25,9 @@ def tab3(df):
 
         return df_one_state
 
-
+    def change_state(attr, old, new):
+        pass
+    
     tools = HoverTool(
         tooltips=[
             ('date', '@date{%F}'),
@@ -37,11 +39,19 @@ def tab3(df):
         formatters={'@date': 'datetime'},
     )
 
-    STATE = "California"
-    df_one_state = get_data_for_state(STATE)
+    states = sorted(list(df['state'].unique()))
 
-    p1 = figure(x_axis_type="datetime", title="Covid-19 Total Cases in {}".format(STATE),
+    source = ColumnDataSource(data=dict(
+        state=states,
+        data=[get_data_for_state(state) for state in states]
+    ))
+
+    df_one_state = get_data_for_state(state)
+
+    p1 = figure(x_axis_type="datetime", title="Covid-19 Total Cases in {}".format(state),
                toolbar_location=None)
+    
+    select = Select(title="State:", value=states[0], options=states, width=300)
 
     # https://stackoverflow.com/questions/50285405/bokeh-the-widths-of-vertical-bars-doesnt-change
     # for datetime axes, the unit is milliseconds since epoch.  So something like width=0.9 will
@@ -50,12 +60,12 @@ def tab3(df):
     p1.vbar(x='date', top='cases', width=timedelta(days=22/24), source=df_one_state.iloc[-40:])
     p1.add_tools(tools)
 
-    p2 = figure(x_axis_type="datetime", x_range=p1.x_range, title="Covid-19 Cases % Growth in {}".format(STATE),
+    p2 = figure(x_axis_type="datetime", x_range=p1.x_range, title="Covid-19 Cases % Growth in {}".format(state),
                toolbar_location=None)
     p2.line(x='date', y='pct_change_cases', source=df_one_state.iloc[-40:])
     p2.add_tools(tools)
 
-    p3 = figure(x_axis_type="datetime", x_range=p1.x_range, title="Covid-19 Deaths % Growth in {}".format(STATE),
+    p3 = figure(x_axis_type="datetime", x_range=p1.x_range, title="Covid-19 Deaths % Growth in {}".format(state),
                toolbar_location=None)
     p3.line(x='date', y='pct_change_deaths', source=df_one_state.iloc[-40:])
     p3.add_tools(tools)
@@ -75,7 +85,7 @@ def tab3(df):
     p3.xaxis.axis_label = "Date"
     p3.yaxis.axis_label = "Total"
 
-    grid = gridplot([[p1],[p2],[p3]], plot_width=900, plot_height=350)
+    grid = gridplot([[select], [p1],[p2],[p3]], plot_width=900, plot_height=350)
  
     tab = Panel(child=grid, title='Tab 3')
     
