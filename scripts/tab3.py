@@ -15,7 +15,7 @@ from bokeh.layouts import column, row, gridplot, widgetbox
 from bokeh.palettes import brewer
 from bokeh.models.widgets import Select, TableColumn, DataTable, CheckboxGroup
 
-def tab3(df, state):
+def tab3(df):
 
     def change_state(attr, old, new):
         new_source = state_data[new]
