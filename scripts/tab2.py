@@ -52,6 +52,7 @@ def tab2(geosource):
     # Create hover tool
     p.add_tools(HoverTool(renderers = [states],
                           tooltips = [('State','@NAME'),
+                                      ('Population', '@POPESTIMATE2018{0,0}'),
                                       ('Cases', '@cases'),
                                       ('Deaths', '@deaths'),
                                       ('Covid-19 Percentage', '@covid_pct{0.00}%')]))

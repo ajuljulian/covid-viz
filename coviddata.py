@@ -52,7 +52,7 @@ def get_california_county_geosource_data():
     df_ca_counties_covid_data = df_ca_counties_covid_data.groupby('county').last()
 
     # add a column representing the ratio of cases to deaths
-    df_ca_counties_covid_data['pct_case_to_death'] = df_ca_counties_covid_data['deaths'] /  df_ca_counties_covid_data['cases'] * 100
+    df_ca_counties_covid_data['pct_deaths_to_cases'] = df_ca_counties_covid_data['deaths'] /  df_ca_counties_covid_data['cases'] * 100
 
     # load a dataset of per county demographic data
     county_demographic_data_file = os.path.join(data_dir, 'counties', 'co-est2019-alldata.csv')

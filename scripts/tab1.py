@@ -44,7 +44,7 @@ def tab1(geosource):
 
     # Add patch renderer to figure.
     counties = p.patches('xs', 'ys', source=geosource,
-                   fill_color = {'field' :'pct_case_to_death',
+                   fill_color = {'field' :'pct_deaths_to_cases',
                                  'transform' : color_mapper},
                    line_color = 'black', 
                    line_width = 0.25, 
@@ -54,7 +54,7 @@ def tab1(geosource):
                       tooltips = [('County','@NAME'),
                                   ('Cases', '@cases'),
                                   ('Deaths', '@deaths'),
-                                  ('Case to Death', '@pct_case_to_death%')
+                                  ('Deaths to Cases', '@pct_deaths_to_cases%')
                                  ]))
     # Specify layout
     p.add_layout(color_bar, 'below')
